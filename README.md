@@ -1,6 +1,6 @@
 # abanda-online-GEOG678-spring2026
 
-Course repository for **GEOG 678 – GIS Modeling**.
+Course repository for **GEOG 678 – Web GIS*.
 
 ## Repository Structure
 
