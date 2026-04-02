@@ -63,7 +63,7 @@ a:hover {
 .profile-img {
   display: block;
   margin: 0 auto 20px auto;
-  width: 150px;
+  width: 75px;
   height: auto;
   border-radius: 10px;
 }
