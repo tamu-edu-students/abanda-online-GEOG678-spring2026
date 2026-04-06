@@ -1,5 +1,5 @@
 function Run() {
-    // Most likely the assignment data is stored in theJSON.data
+    
     var data = theJSON.data;
 
     var topLeftPoint = findTopLeft(data);
