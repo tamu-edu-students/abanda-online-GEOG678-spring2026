@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Adan Banda First Web Map</title>
+
+  <link
+    rel="stylesheet"
+    href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+  />
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background-color: #f7f7f7;
+      color: #222;
+    }
+
+    header {
+      background-color: #500000;
+      color: white;
+      text-align: center;
+      padding: 16px 10px;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: 28px;
+    }
+
+    header p {
+      margin: 6px 0 0 0;
+      font-size: 15px;
+    }
+
+    #map {
+      width: 94%;
+      height: 78vh;
+      margin: 18px auto;
+      border: 3px solid #500000;
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    }
+
+    .info-box {
+      width: 94%;
+      margin: 0 auto 18px auto;
+      background: white;
+      border-left: 6px solid #500000;
+      padding: 12px 16px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+      line-height: 1.5;
+    }
+
+    .leaflet-popup-content-wrapper {
+      border-radius: 8px;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Adan Banda First Web Map</h1>
+    <p>GEOG 678 Lab 5 - Leaflet Custom Web Map</p>
+  </header>
+
+  <div class="info-box">
+    This custom map demonstrates Leaflet geolocation, custom markers, popups,
+    a circle around Kyle Field, and a click event that reports coordinates.
+  </div>
+
+  <div id="map"></div>
+
+  <script>
+    // Initialize map
+    const map = L.map('map').setView([30.6187, -96.3365], 16);
+
+    // Basemap
+    L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      maxZoom: 19,
+      attribution: '&copy; OpenStreetMap contributors'
+    }).addTo(map);
+
+    // Custom campus icon
+    const campusIcon = L.icon({
+      iconUrl: 'https://cdn-icons-png.flaticon.com/512/684/684908.png',
+      iconSize: [34, 34],
+      iconAnchor: [17, 34],
+      popupAnchor: [0, -30]
+    });
+
+    // Kyle Field circle
+    L.circle([30.6103, -96.3404], {
+      color: '#500000',
+      fillColor: '#7a0019',
+      fillOpacity: 0.25,
+      radius: 320
+    }).addTo(map).bindPopup('<b>Kyle Field</b><br>Texas A&amp;M stadium area.');
+
+    // O&M Building marker
+    L.marker([30.6179, -96.3400], { icon: campusIcon }).addTo(map)
+      .bindPopup('<b>O&amp;M Building</b><br>Operations and Maintenance area.');
+
+    // Academic Building marker
+    L.marker([30.6157, -96.3402], { icon: campusIcon }).addTo(map)
+      .bindPopup('<b>Academic Building</b><br>Historic academic landmark on campus.');
+
+    // Geolocation
+    function onLocationFound(e) {
+      const radius = e.accuracy / 2;
+
+      L.marker(e.latlng).addTo(map)
+        .bindPopup('Your detected location<br>Within ' + Math.round(radius) + ' meters.')
+        .openPopup();
+
+      L.circle(e.latlng, {
+        radius: radius,
+        color: 'blue',
+        fillColor: '#3b82f6',
+        fillOpacity: 0.15
+      }).addTo(map);
+    }
+
+    function onLocationError(e) {
+      alert('Location access denied or unavailable: ' + e.message);
+    }
+
+    map.on('locationfound', onLocationFound);
+    map.on('locationerror', onLocationError);
+
+    map.locate({ setView: true, maxZoom: 16 });
+
+    // Click event showing coordinates
+    function onMapClick(e) {
+      alert(
+        'Latitude: ' + e.latlng.lat.toFixed(6) +
+        '\nLongitude: ' + e.latlng.lng.toFixed(6)
+      );
+    }
+
+    map.on('click', onMapClick);
+  </script>
+</body>
+</html>

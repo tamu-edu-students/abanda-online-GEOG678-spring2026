@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Quick Start</title>
+
+  <link
+    rel="stylesheet"
+    href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+  />
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+  <style>
+    body { margin: 0; font-family: Arial, sans-serif; }
+    h1 { text-align: center; margin: 12px 0; }
+    #map { width: 100%; height: 85vh; }
+  </style>
+</head>
+<body>
+  <h1>Leaflet Quick Start</h1>
+  <div id="map"></div>
+
+  <script>
+    const map = L.map('map').setView([51.505, -0.09], 13);
+
+    L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      maxZoom: 19,
+      attribution: '&copy; OpenStreetMap contributors'
+    }).addTo(map);
+
+    L.marker([51.5, -0.09]).addTo(map)
+      .bindPopup('A basic Leaflet marker.')
+      .openPopup();
+
+    L.circle([51.508, -0.11], {
+      color: 'red',
+      fillColor: '#f03',
+      fillOpacity: 0.3,
+      radius: 500
+    }).addTo(map).bindPopup('A circle.');
+
+    L.polygon([
+      [51.509, -0.08],
+      [51.503, -0.06],
+      [51.51, -0.047]
+    ]).addTo(map).bindPopup('A polygon.');
+  </script>
+</body>
+</html>

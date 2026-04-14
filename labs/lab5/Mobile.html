@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Leaflet on Mobile</title>
+
+  <link
+    rel="stylesheet"
+    href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+  />
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      font-family: Arial, sans-serif;
+    }
+    h1 {
+      text-align: center;
+      margin: 8px 0;
+      font-size: 20px;
+    }
+    #map {
+      width: 100%;
+      height: calc(100% - 40px);
+    }
+  </style>
+</head>
+<body>
+  <h1>Leaflet on Mobile</h1>
+  <div id="map"></div>
+
+  <script>
+    const map = L.map('map').fitWorld();
+
+    L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      maxZoom: 19,
+      attribution: '&copy; OpenStreetMap contributors'
+    }).addTo(map);
+
+    function onLocationFound(e) {
+      const radius = e.accuracy / 2;
+
+      L.marker(e.latlng).addTo(map)
+        .bindPopup('You are within ' + Math.round(radius) + ' meters from this point.')
+        .openPopup();
+
+      L.circle(e.latlng, radius).addTo(map);
+    }
+
+    function onLocationError(e) {
+      alert(e.message);
+    }
+
+    map.on('locationfound', onLocationFound);
+    map.on('locationerror', onLocationError);
+
+    map.locate({ setView: true, maxZoom: 16 });
+  </script>
+</body>
+</html>
