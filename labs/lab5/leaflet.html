@@ -31,7 +31,16 @@
   <div id="map"></div>
 
   <script>
-    // Leaflet code goes here
+    const map = L.map('map').setView([30.6187, -96.3365], 16);
+
+L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+  maxZoom: 19,
+  attribution: '&copy; OpenStreetMap contributors'
+}).addTo(map);
+
+L.marker([30.6187, -96.3365]).addTo(map)
+  .bindPopup('Texas A&M Campus')
+  .openPopup();
   </script>
 </body>
 </html>
