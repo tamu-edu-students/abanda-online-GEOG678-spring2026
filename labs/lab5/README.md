@@ -6,3 +6,9 @@ This folder contains four Leaflet HTML pages for GEOG 678 Lab 5:
 - Mobile.html
 - CustomIcons.html
 - Custom_Map.html
+
+## Custom Map
+
+Here is my completed Leaflet custom map:
+
+![Custom Map Screenshot](images/CustomMap_AdanBanda.png)
