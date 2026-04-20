@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Adan Banda TAMU Map</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="tamubuildings.js"></script>
+
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f7f7f7;
+    }
+
+    h1 {
+      text-align: center;
+      background: #500000;
+      color: white;
+      margin: 0;
+      padding: 14px;
+    }
+
+    #mapid {
+      height: 82vh;
+      width: 95%;
+      margin: 15px auto;
+      border: 2px solid #500000;
+      border-radius: 6px;
+    }
+
+    .info {
+      padding: 6px 8px;
+      font: 14px/16px Arial, Helvetica, sans-serif;
+      background: rgba(255,255,255,0.9);
+      box-shadow: 0 0 10px rgba(0,0,0,0.2);
+      border-radius: 5px;
+    }
+
+    .info h4 {
+      margin: 0 0 5px;
+      color: #500000;
+    }
+  </style>
+</head>
+<body>
+  <h1>Adan Banda TAMU Map</h1>
+  <div id="mapid"></div>
+
+  <script>
+    const map = L.map('mapid').setView([30.6188, -96.3365], 15);
+
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '&copy; OpenStreetMap contributors',
+      maxZoom: 19
+    }).addTo(map);
+
+    const info = L.control();
+
+    info.onAdd = function () {
+      this._div = L.DomUtil.create('div', 'info');
+      this.update();
+      return this._div;
+    };
+
+    info.update = function (props) {
+      this._div.innerHTML = '<h4>TAMU Building Info</h4>' + (props
+        ? '<b>' + props.BldgName + '</b><br/>Abbreviation: ' + props.BldgAbbr
+        : 'Hover over a building');
+    };
+
+    info.addTo(map);
+
+    function style(feature) {
+      return {
+        weight: 2,
+        opacity: 1,
+        color: '#500000',
+        dashArray: '3',
+        fillOpacity: 0.6,
+        fillColor: '#800000'
+      };
+    }
+
+    function highlightFeature(e) {
+      const layer = e.target;
+
+      layer.setStyle({
+        weight: 4,
+        color: '#222',
+        dashArray: '',
+        fillOpacity: 0.85
+      });
+
+      if (!L.Browser.ie && !L.Browser.opera && !L.Browser.edge) {
+        layer.bringToFront();
+      }
+
+      info.update(layer.feature.properties);
+    }
+
+    let buildingsLayer;
+
+    function resetHighlight(e) {
+      buildingsLayer.resetStyle(e.target);
+      info.update();
+    }
+
+    function zoomToFeature(e) {
+      map.fitBounds(e.target.getBounds());
+    }
+
+    function onEachFeature(feature, layer) {
+      layer.on({
+        mouseover: highlightFeature,
+        mouseout: resetHighlight,
+        click: zoomToFeature
+      });
+    }
+
+    buildingsLayer = L.geoJSON(tamu, {
+      style: style,
+      onEachFeature: onEachFeature
+    }).addTo(map);
+  </script>
+</body>
+</html>

@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Tutorial 2 - Interactive Choropleth Map</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+  <style>
+    body { font-family: Arial, sans-serif; margin: 0; }
+    h1 { text-align: center; margin: 12px 0; }
+    #mapid { height: 80vh; width: 95%; margin: 0 auto 20px auto; border: 1px solid #ccc; }
+    .info {
+      padding: 6px 8px;
+      background: rgba(255,255,255,0.9);
+      box-shadow: 0 0 8px rgba(0,0,0,0.2);
+      border-radius: 5px;
+      font: 14px Arial, sans-serif;
+    }
+    .info h4 { margin: 0 0 5px; }
+  </style>
+</head>
+<body>
+  <h1>Tutorial 2 - Interactive Choropleth Map</h1>
+  <div id="mapid"></div>
+
+  <script>
+    const map = L.map('mapid').setView([37.8, -96], 4);
+
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '&copy; OpenStreetMap contributors',
+      maxZoom: 19
+    }).addTo(map);
+
+    const statesData = {
+      "type": "FeatureCollection",
+      "features": [
+        {
+          "type": "Feature",
+          "properties": { "name": "Area 1", "density": 25 },
+          "geometry": {
+            "type": "Polygon",
+            "coordinates": [[[-104,41],[-100,41],[-100,38],[-104,38],[-104,41]]]
+          }
+        },
+        {
+          "type": "Feature",
+          "properties": { "name": "Area 2", "density": 75 },
+          "geometry": {
+            "type": "Polygon",
+            "coordinates": [[[-100,41],[-96,41],[-96,38],[-100,38],[-100,41]]]
+          }
+        }
+      ]
+    };
+
+    function getColor(d) {
+      return d > 50 ? '#800026' : '#FEB24C';
+    }
+
+    function style(feature) {
+      return {
+        fillColor: getColor(feature.properties.density),
+        weight: 2,
+        opacity: 1,
+        color: 'white',
+        fillOpacity: 0.7
+      };
+    }
+
+    const info = L.control();
+
+    info.onAdd = function () {
+      this._div = L.DomUtil.create('div', 'info');
+      this.update();
+      return this._div;
+    };
+
+    info.update = function (props) {
+      this._div.innerHTML = '<h4>Area Info</h4>' + (props
+        ? '<b>' + props.name + '</b><br/>Density: ' + props.density
+        : 'Hover over an area');
+    };
+
+    info.addTo(map);
+
+    function highlightFeature(e) {
+      const layer = e.target;
+      layer.setStyle({
+        weight: 4,
+        color: '#666',
+        fillOpacity: 0.9
+      });
+      info.update(layer.feature.properties);
+    }
+
+    let geojson;
+
+    function resetHighlight(e) {
+      geojson.resetStyle(e.target);
+      info.update();
+    }
+
+    function zoomToFeature(e) {
+      map.fitBounds(e.target.getBounds());
+    }
+
+    function onEachFeature(feature, layer) {
+      layer.on({
+        mouseover: highlightFeature,
+        mouseout: resetHighlight,
+        click: zoomToFeature
+      });
+    }
+
+    geojson = L.geoJSON(statesData, {
+      style: style,
+      onEachFeature: onEachFeature
+    }).addTo(map);
+  </script>
+</body>
+</html>

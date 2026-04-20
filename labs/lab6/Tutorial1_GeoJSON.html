@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Tutorial 1 - Using GeoJSON with Leaflet</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+  <style>
+    body { font-family: Arial, sans-serif; margin: 0; }
+    h1 { text-align: center; margin: 12px 0; }
+    #mapid { height: 80vh; width: 95%; margin: 0 auto 20px auto; border: 1px solid #ccc; }
+  </style>
+</head>
+<body>
+  <h1>Tutorial 1 - Using GeoJSON with Leaflet</h1>
+  <div id="mapid"></div>
+
+  <script>
+    const map = L.map('mapid').setView([39.74739, -106], 4);
+
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '&copy; OpenStreetMap contributors',
+      maxZoom: 19
+    }).addTo(map);
+
+    const myPoint = {
+      "type": "Feature",
+      "properties": {
+        "name": "Coors Field",
+        "amenity": "Baseball Stadium",
+        "popupContent": "This is where the Rockies play!"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-104.99404, 39.75621]
+      }
+    };
+
+    const myLines = [{
+      "type": "LineString",
+      "coordinates": [[-100, 40], [-105, 45], [-110, 55]]
+    }, {
+      "type": "LineString",
+      "coordinates": [[-105, 40], [-110, 45], [-115, 55]]
+    }];
+
+    const myPolys = [{
+      "type": "Feature",
+      "properties": { "party": "Republican" },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [[
+          [-104.05, 48.99],
+          [-97.22, 48.98],
+          [-96.58, 45.94],
+          [-104.03, 45.94],
+          [-104.05, 48.99]
+        ]]
+      }
+    }, {
+      "type": "Feature",
+      "properties": { "party": "Democrat" },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [[
+          [-109.05, 41.00],
+          [-102.06, 40.99],
+          [-102.03, 36.99],
+          [-109.04, 36.99],
+          [-109.05, 41.00]
+        ]]
+      }
+    }];
+
+    L.geoJSON(myPoint, {
+      onEachFeature: function (feature, layer) {
+        layer.bindPopup(feature.properties.popupContent);
+      }
+    }).addTo(map);
+
+    L.geoJSON(myLines, {
+      style: {
+        color: "#ff7800",
+        weight: 5,
+        opacity: 0.65
+      }
+    }).addTo(map);
+
+    L.geoJSON(myPolys, {
+      style: function (feature) {
+        switch (feature.properties.party) {
+          case "Republican": return { color: "#ff0000" };
+          case "Democrat": return { color: "#0000ff" };
+        }
+      }
+    }).addTo(map);
+  </script>
+</body>
+</html>
