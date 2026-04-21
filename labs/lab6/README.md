@@ -1,4 +1,3 @@
-# abanda-online-GEOG678-spring2026
 # GEOG 678 – Lab 6 (Adan Banda)
 
 ## Overview
