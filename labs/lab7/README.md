@@ -17,7 +17,7 @@ This story map explores selected cemetery locations across the Dallas–Fort Wor
 ![2D Story Map](AdanBanda_StoryMap_2D.png)
 
 ### Link
-See `links.txt` for the published Story Map URL.
+- [2D Story Map – DFW Cemeteries](https://arcg.is/0H05iW1)
 
 ---
 
@@ -39,7 +39,7 @@ This story map uses a 3D web scene to explore the architectural landscape of Tex
 ![3D Story Map](AdanBanda_StoryMap_3D.png)
 
 ### Link
-See `links.txt` for the published Story Map URL.
+- [3D Story Map – TAMU Architecture](https://arcg.is/1a19zW2)
 
 
 ## Files Included
