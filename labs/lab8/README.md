@@ -14,6 +14,7 @@ This lab demonstrates the creation of an operations dashboard and interactive ch
 
 
 ## Highcharts Chart
+This one was a bit tricky and I needed to install an extension called Live Server so the code could render. The JS library was not functioning under the standard file:// mode. 
 ![Highcharts Chart](AdanBanda_HighCharts.png)
 
 
