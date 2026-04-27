@@ -19,7 +19,7 @@ This lab demonstrates the creation of an operations dashboard and interactive ch
 
 
 ## Dashboard
-![Dashboard](AdanBanda_WildfireDashboard_Lab8)
+![Dashboard](AdanBanda_WildfireDashboard_Lab8.png)
 
 
 
